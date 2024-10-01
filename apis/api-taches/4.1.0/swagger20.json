@@ -1,0 +1,261 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Une API pour gérer une liste de tâches à effectuer.",
+    "version" : "4.1.0",
+    "title" : "API Tâches",
+    "termsOfService" : "",
+    "contact" : { }
+  },
+  "consumes" : [ "application/json" ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+    "/tasks/" : {
+      "get" : {
+        "summary" : "Charger la liste des tâches",
+        "parameters" : [ {
+          "name" : "$size",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "description" : "Taille de la page à récupérer.",
+          "x-example" : 10
+        }, {
+          "name" : "$page",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "description" : "Numéro de la page à récupérer.",
+          "x-example" : 1
+        }, {
+          "name" : "$sort",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "description" : "Ordre dans lequel récupérer les résultats. Plusieurs critères de tri peuvent être passés.",
+          "x-example" : "createdAt DESC"
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `id`",
+          "x-example" : "47ee3550-b619-11e6-8408-0bdb025a7cfa"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `name`",
+          "x-example" : "En savoir plus sur les API"
+        }, {
+          "name" : "createdAt",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `createdAt`",
+          "x-example" : "2016.07.03"
+        }, {
+          "name" : "completed",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean",
+          "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `completed`",
+          "x-example" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/T%C3%A2che"
+              }
+            },
+            "examples" : {
+              "application/json" : "[{\n  \"id\": \"47ee3550-b619-11e6-8408-0bdb025a7cfa\",\n  \"name\": \"Nourrir le poisson\",\n  \"completed\": false,\n  \"createdAt\": \"2016.07.03\"\n}]"
+            },
+            "headers" : {
+              "X-Page-Count" : {
+                "type" : "integer",
+                "x-example" : 1
+              },
+              "X-Page-Number" : {
+                "type" : "integer",
+                "x-example" : 1
+              },
+              "X-Page-Size" : {
+                "type" : "integer",
+                "x-example" : 25
+              },
+              "X-Total-Count" : {
+                "type" : "integer",
+                "x-example" : 2
+              }
+            }
+          },
+          "400" : {
+            "description" : "Statut 400",
+            "schema" : {
+              "$ref" : "#/definitions/Erreur"
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Créer une tâche",
+        "consumes" : [ ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/T%C3%A2che"
+          },
+          "x-examples" : {
+            "application/json" : "{\n  \"name\": \"Nourrir le poisson\",\n  \"completed\": false,\n  \"createdAt\": \"2016.07.03\"\n}"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200",
+            "schema" : {
+              "$ref" : "#/definitions/T%C3%A2che"
+            },
+            "examples" : {
+              "application/json" : "{\n  \"id\": \"47ee3550-b619-11e6-8408-0bdb025a7cfa\",\n  \"name\": \"Nourrir le poisson\",\n  \"completed\": false,\n  \"createdAt\": \"2016.07.03\"\n}"
+            }
+          }
+        },
+        "security" : [ {
+          "HTTP_BASIC" : [ ]
+        } ]
+      }
+    },
+    "/tasks/{taskid}" : {
+      "get" : {
+        "summary" : "Charger une tâche spécifique",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200",
+            "schema" : {
+              "$ref" : "#/definitions/T%C3%A2che"
+            },
+            "examples" : {
+              "application/json" : "{\n  \"id\": \"47ee3550-b619-11e6-8408-0bdb025a7cfa\",\n  \"name\": \"Nourrir le poisson\",\n  \"completed\": false,\n  \"createdAt\": \"2016.07.03\"\n}"
+            }
+          },
+          "400" : {
+            "description" : "Statut 400",
+            "schema" : {
+              "$ref" : "#/definitions/Erreur"
+            }
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Mettre une tâche à jour",
+        "consumes" : [ ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/T%C3%A2che"
+          },
+          "x-examples" : {
+            "application/json" : "{\n  \"name\": \"Nourrir le poisson\",\n  \"completed\": false,\n  \"createdAt\": \"2016.07.03\"\n}"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200",
+            "schema" : {
+              "$ref" : "#/definitions/T%C3%A2che"
+            },
+            "examples" : {
+              "application/json" : "{\n  \"id\": \"47ee3550-b619-11e6-8408-0bdb025a7cfa\",\n  \"name\": \"Nourrir le poisson\",\n  \"completed\": false,\n  \"createdAt\": \"2016.07.03\"\n}"
+            }
+          }
+        },
+        "security" : [ {
+          "HTTP_BASIC" : [ ]
+        } ]
+      },
+      "delete" : {
+        "summary" : "Supprimer une tâche",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200"
+          }
+        },
+        "security" : [ {
+          "HTTP_BASIC" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "taskid",
+        "in" : "path",
+        "required" : true,
+        "type" : "string",
+        "description" : "Identifiant de la tâche",
+        "x-example" : "47ee3550-b619-11e6-8408-0bdb025a7cfa"
+      } ]
+    }
+  },
+  "securityDefinitions" : {
+    "HTTP_BASIC" : {
+      "description" : "Toutes les méthodes GET sont publiques, ce qui signifie que *vous pouvez lire toutes les données*. Les opérations d'écriture nécessitent une authentification et sont donc interdites d'accès au public.",
+      "type" : "basic"
+    }
+  },
+  "definitions" : {
+    "Tâche" : {
+      "type" : "object",
+      "required" : [ "completed", "id", "name" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Champ de clé primaire auto-généré",
+          "example" : "3fa2eb40-b61c-11e6-9de0-fdbe71bceebb"
+        },
+        "name" : {
+          "type" : "string",
+          "example" : "Comprendre comment coloniser Mars"
+        },
+        "completed" : {
+          "type" : "boolean"
+        },
+        "createdAt" : {
+          "type" : "string",
+          "example" : "2016.10.06"
+        }
+      },
+      "description" : "Un objet représentant une tâche.",
+      "example" : "{\n  \"id\": \"47ee3550-b619-11e6-8408-0bdb025a7cfa\",\n  \"name\": \"Nourrir le poisson\",\n  \"completed\": false,\n  \"createdAt\": \"2016.07.03\"\n}"
+    },
+    "Erreur" : {
+      "type" : "object",
+      "required" : [ "code" ],
+      "properties" : {
+        "code" : {
+          "type" : "integer",
+          "minimum" : 400,
+          "maximum" : 599
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Paramètre de requête invalide [$size] : valeur entière invalide [abc]"
+        },
+        "reasonPhrase" : {
+          "type" : "string",
+          "example" : "Bad Request"
+        }
+      },
+      "description" : "Cette structure générale d'erreur est utilisée à travers toute l'API.",
+      "example" : "{\n  \"code\": 400,\n  \"description\": \"Paramètre de requête invalide [$size] : valeur entière invalide [abc]\",\n  \"reasonPhrase\": \"Bad Request\"\n}"
+    }
+  }
+}

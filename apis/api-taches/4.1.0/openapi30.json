@@ -1,0 +1,296 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "API Tâches",
+    "description" : "Une API pour gérer une liste de tâches à effectuer.",
+    "contact" : { },
+    "version" : "4.1.0"
+  },
+  "paths" : {
+    "/tasks/" : {
+      "get" : {
+        "summary" : "Charger la liste des tâches",
+        "parameters" : [ {
+          "name" : "$size",
+          "in" : "query",
+          "description" : "Taille de la page à récupérer.",
+          "schema" : {
+            "type" : "integer",
+            "description" : "Taille de la page à récupérer."
+          },
+          "example" : 10
+        }, {
+          "name" : "$page",
+          "in" : "query",
+          "description" : "Numéro de la page à récupérer.",
+          "schema" : {
+            "type" : "integer",
+            "description" : "Numéro de la page à récupérer."
+          },
+          "example" : 1
+        }, {
+          "name" : "$sort",
+          "in" : "query",
+          "description" : "Ordre dans lequel récupérer les résultats. Plusieurs critères de tri peuvent être passés.",
+          "schema" : {
+            "type" : "string",
+            "description" : "Ordre dans lequel récupérer les résultats. Plusieurs critères de tri peuvent être passés."
+          },
+          "example" : "createdAt DESC"
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `id`",
+          "schema" : {
+            "type" : "string",
+            "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `id`"
+          },
+          "example" : "47ee3550-b619-11e6-8408-0bdb025a7cfa"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `name`",
+          "schema" : {
+            "type" : "string",
+            "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `name`"
+          },
+          "example" : "En savoir plus sur les API"
+        }, {
+          "name" : "createdAt",
+          "in" : "query",
+          "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `createdAt`",
+          "schema" : {
+            "type" : "string",
+            "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `createdAt`"
+          },
+          "example" : "2016.07.03"
+        }, {
+          "name" : "completed",
+          "in" : "query",
+          "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `completed`",
+          "schema" : {
+            "type" : "boolean",
+            "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `completed`"
+          },
+          "example" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200",
+            "headers" : {
+              "X-Page-Count" : {
+                "schema" : {
+                  "type" : "integer"
+                },
+                "example" : 1
+              },
+              "X-Page-Number" : {
+                "schema" : {
+                  "type" : "integer"
+                },
+                "example" : 1
+              },
+              "X-Page-Size" : {
+                "schema" : {
+                  "type" : "integer"
+                },
+                "example" : 25
+              },
+              "X-Total-Count" : {
+                "schema" : {
+                  "type" : "integer"
+                },
+                "example" : 2
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Tache"
+                  }
+                },
+                "example" : "[{\n  \"id\": \"47ee3550-b619-11e6-8408-0bdb025a7cfa\",\n  \"name\": \"Nourrir le poisson\",\n  \"completed\": false,\n  \"createdAt\": \"2016.07.03\"\n}]"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Statut 400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Erreur"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Créer une tâche",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Tache"
+              },
+              "example" : "{\n  \"name\": \"Nourrir le poisson\",\n  \"completed\": false,\n  \"createdAt\": \"2016.07.03\"\n}"
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Tache"
+                },
+                "example" : "{\n  \"id\": \"47ee3550-b619-11e6-8408-0bdb025a7cfa\",\n  \"name\": \"Nourrir le poisson\",\n  \"completed\": false,\n  \"createdAt\": \"2016.07.03\"\n}"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "HTTP_BASIC" : [ ]
+        } ]
+      }
+    },
+    "/tasks/{taskid}" : {
+      "get" : {
+        "summary" : "Charger une tâche spécifique",
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Tache"
+                },
+                "example" : "{\n  \"id\": \"47ee3550-b619-11e6-8408-0bdb025a7cfa\",\n  \"name\": \"Nourrir le poisson\",\n  \"completed\": false,\n  \"createdAt\": \"2016.07.03\"\n}"
+              }
+            }
+          },
+          "400" : {
+            "description" : "Statut 400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Erreur"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Mettre une tâche à jour",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Tache"
+              },
+              "example" : "{\n  \"name\": \"Nourrir le poisson\",\n  \"completed\": false,\n  \"createdAt\": \"2016.07.03\"\n}"
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Tache"
+                },
+                "example" : "{\n  \"id\": \"47ee3550-b619-11e6-8408-0bdb025a7cfa\",\n  \"name\": \"Nourrir le poisson\",\n  \"completed\": false,\n  \"createdAt\": \"2016.07.03\"\n}"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "HTTP_BASIC" : [ ]
+        } ]
+      },
+      "delete" : {
+        "summary" : "Supprimer une tâche",
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200"
+          }
+        },
+        "security" : [ {
+          "HTTP_BASIC" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "taskid",
+        "in" : "path",
+        "required" : true,
+        "description" : "Identifiant de la tâche",
+        "schema" : {
+          "type" : "string",
+          "description" : "Identifiant de la tâche"
+        },
+        "example" : "47ee3550-b619-11e6-8408-0bdb025a7cfa"
+      } ]
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Erreur" : {
+        "type" : "object",
+        "required" : [ "code" ],
+        "description" : "Cette structure générale d'erreur est utilisée à travers toute l'API.",
+        "properties" : {
+          "code" : {
+            "type" : "integer",
+            "minimum" : 400,
+            "maximum" : 599
+          },
+          "description" : {
+            "type" : "string",
+            "example" : "Paramètre de requête invalide [$size] : valeur entière invalide [abc]"
+          },
+          "reasonPhrase" : {
+            "type" : "string",
+            "example" : "Bad Request"
+          }
+        },
+        "example" : "{\n  \"code\": 400,\n  \"description\": \"Paramètre de requête invalide [$size] : valeur entière invalide [abc]\",\n  \"reasonPhrase\": \"Bad Request\"\n}"
+      },
+      "Tache" : {
+        "type" : "object",
+        "required" : [ "completed", "id", "name" ],
+        "description" : "Un objet représentant une tâche.",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "Champ de clé primaire auto-généré",
+            "example" : "3fa2eb40-b61c-11e6-9de0-fdbe71bceebb"
+          },
+          "name" : {
+            "type" : "string",
+            "example" : "Comprendre comment coloniser Mars"
+          },
+          "completed" : {
+            "type" : "boolean"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "example" : "2016.10.06"
+          }
+        },
+        "example" : "{\n  \"id\": \"47ee3550-b619-11e6-8408-0bdb025a7cfa\",\n  \"name\": \"Nourrir le poisson\",\n  \"completed\": false,\n  \"createdAt\": \"2016.07.03\"\n}"
+      }
+    },
+    "securitySchemes" : {
+      "HTTP_BASIC" : {
+        "type" : "http",
+        "scheme" : "basic",
+        "description" : "Toutes les méthodes GET sont publiques, ce qui signifie que *vous pouvez lire toutes les données*. Les opérations d'écriture nécessitent une authentification et sont donc interdites d'accès au public."
+      }
+    }
+  }
+}

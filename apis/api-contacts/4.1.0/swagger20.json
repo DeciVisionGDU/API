@@ -1,0 +1,515 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "API permettant de garder une trace de vos contacts et de l'entreprise pour laquelle ils travaillent.",
+    "version" : "4.1.0",
+    "title" : "API Contacts",
+    "termsOfService" : "",
+    "contact" : { }
+  },
+  "consumes" : [ "application/json" ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+    "/contacts/" : {
+      "get" : {
+        "tags" : [ "Contacts" ],
+        "summary" : "Obtenir la liste des contacts",
+        "description" : "Charge une liste de contacts",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "$size",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "description" : "Taille de la page à récupérer.",
+          "x-example" : 10
+        }, {
+          "name" : "$page",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "description" : "Numéro de la page à récupérer.",
+          "x-example" : 1
+        }, {
+          "name" : "$sort",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "description" : "Ordre dans lequel récupérer les résultats. Plusieurs critères de tri peuvent être passés.",
+          "x-example" : "birthday DESC"
+        }, {
+          "name" : "firstName",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `firstName`",
+          "x-example" : "John"
+        }, {
+          "name" : "lastName",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `lastName`",
+          "x-example" : "Doe"
+        }, {
+          "name" : "active",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean",
+          "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `active`",
+          "x-example" : true
+        }, {
+          "name" : "company",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `company`",
+          "x-example" : "0e8c9fb0-ad98-11e6-bf2e-47644ada7c0f"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Contact"
+              }
+            },
+            "examples" : {
+              "application/json" : "[{\n  \"id\": \"0e8dd830-ad98-11e6-bf2e-47644ada7c0f\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"birthday\": 152755200000,\n  \"active\": true,\n  \"rank\": 1,\n  \"company\": \"0e8cedd0-ad98-11e6-bf2e-47644ada7c0f\"\n}]"
+            },
+            "headers" : {
+              "X-Page-Count" : {
+                "type" : "integer",
+                "x-example" : 1
+              },
+              "X-Page-Number" : {
+                "type" : "integer",
+                "x-example" : 1
+              },
+              "X-Page-Size" : {
+                "type" : "integer",
+                "x-example" : 25
+              },
+              "X-Total-Count" : {
+                "type" : "integer",
+                "x-example" : 2
+              }
+            }
+          },
+          "400" : {
+            "description" : "Status 400",
+            "schema" : {
+              "$ref" : "#/definitions/Erreur"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Contacts" ],
+        "summary" : "Créer un contact",
+        "description" : "Ajoute un contact",
+        "consumes" : [ ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Contact"
+          },
+          "x-examples" : {
+            "application/json" : "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"birthday\": 152755200000,\n  \"active\": true,\n  \"rank\": 1,\n  \"company\": \"0e8cedd0-ad98-11e6-bf2e-47644ada7c0f\"\n}"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200",
+            "schema" : {
+              "$ref" : "#/definitions/Contact"
+            },
+            "examples" : {
+              "application/json" : "{\n  \"id\": \"0e8dd830-ad98-11e6-bf2e-47644ada7c0f\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"birthday\": 152755200000,\n  \"active\": true,\n  \"rank\": 1,\n  \"company\": \"0e8cedd0-ad98-11e6-bf2e-47644ada7c0f\"\n}"
+            }
+          }
+        },
+        "security" : [ {
+          "HTTP_BASIC" : [ ]
+        } ]
+      }
+    },
+    "/contacts/{contactid}" : {
+      "get" : {
+        "tags" : [ "Contacts" ],
+        "summary" : "Charger un contact",
+        "description" : "Charge un contact",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200",
+            "schema" : {
+              "$ref" : "#/definitions/Contact"
+            },
+            "examples" : {
+              "application/json" : "{\n  \"id\": \"0e8dd830-ad98-11e6-bf2e-47644ada7c0f\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"birthday\": 152755200000,\n  \"active\": true,\n  \"rank\": 1,\n  \"company\": \"0e8cedd0-ad98-11e6-bf2e-47644ada7c0f\"\n}"
+            }
+          },
+          "400" : {
+            "description" : "Status 400",
+            "schema" : {
+              "$ref" : "#/definitions/Erreur"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Contacts" ],
+        "summary" : "Mettre à jour un contact",
+        "description" : "Met à jour un contact",
+        "consumes" : [ ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Contact"
+          },
+          "x-examples" : {
+            "application/json" : "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"birthday\": 152755200000,\n  \"active\": true,\n  \"rank\": 1,\n  \"company\": \"0e8cedd0-ad98-11e6-bf2e-47644ada7c0f\"\n}"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200",
+            "schema" : {
+              "$ref" : "#/definitions/Contact"
+            },
+            "examples" : {
+              "application/json" : "{\n  \"id\": \"0e8dd830-ad98-11e6-bf2e-47644ada7c0f\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"birthday\": 152755200000,\n  \"active\": true,\n  \"rank\": 1,\n  \"company\": \"0e8cedd0-ad98-11e6-bf2e-47644ada7c0f\"\n}"
+            }
+          }
+        },
+        "security" : [ {
+          "HTTP_BASIC" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "Contacts" ],
+        "summary" : "Supprimer un contact",
+        "description" : "Supprime un contact",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200"
+          }
+        },
+        "security" : [ {
+          "HTTP_BASIC" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "contactid",
+        "in" : "path",
+        "required" : true,
+        "type" : "string",
+        "description" : "Identifiant du contact",
+        "x-example" : "0e8dd830-ad98-11e6-bf2e-47644ada7c0f"
+      } ]
+    },
+    "/companies/" : {
+      "get" : {
+        "tags" : [ "Entreprises" ],
+        "summary" : "Charger la liste des entreprises",
+        "description" : "Charge une liste d'entreprises",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "$size",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "description" : "Taille de la page à récupérer.",
+          "x-example" : 10
+        }, {
+          "name" : "$page",
+          "in" : "query",
+          "required" : false,
+          "type" : "integer",
+          "description" : "Numéro de la page à récupérer.",
+          "x-example" : 1
+        }, {
+          "name" : "$sort",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "description" : "Ordre dans lequel récupérer les résultats. Plusieurs critères de tri peuvent être passés.",
+          "x-example" : "birthday DESC"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "required" : false,
+          "type" : "string",
+          "description" : "Permet de filtrer la collection de résultats sur la valeur du champ `name`",
+          "x-example" : "George Street Brewery"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Entreprise"
+              }
+            },
+            "examples" : {
+              "application/json" : "[{\n  \"id\": \"0e8cedd0-ad98-11e6-bf2e-47644ada7c0f\",\n  \"name\": \"George Street Brewery\",\n  \"address\":{\n    \"street\": \"2 place de la Defense\",\n    \"zipcode\": \"92053\",\n    \"city\": \"Paris\"\n  },\n  \"tags\":[\n    \"Brasserie\",\n    \"Bière\",\n    \"Bière anglaise\"\n  ]\n}]"
+            },
+            "headers" : {
+              "X-Page-Count" : {
+                "type" : "integer",
+                "x-example" : 1
+              },
+              "X-Page-Number" : {
+                "type" : "integer",
+                "x-example" : 1
+              },
+              "X-Page-Size" : {
+                "type" : "integer",
+                "x-example" : 25
+              },
+              "X-Total-Count" : {
+                "type" : "integer",
+                "x-example" : 2
+              }
+            }
+          },
+          "400" : {
+            "description" : "Status 400",
+            "schema" : {
+              "$ref" : "#/definitions/Erreur"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Entreprises" ],
+        "summary" : "Créer une nouvelle entreprise",
+        "description" : "Ajoute une entreprise",
+        "consumes" : [ ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Entreprise"
+          },
+          "x-examples" : {
+            "application/json" : "{\n  \"name\": \"George Street Brewery\",\n  \"address\":{\n    \"street\": \"2 place de la Defense\",\n    \"zipcode\": \"92053\",\n    \"city\": \"Paris\"\n  },\n  \"tags\":[\n    \"Brasserie\",\n    \"Bière\",\n    \"Bière anglaise\"\n  ]\n}"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200",
+            "schema" : {
+              "$ref" : "#/definitions/Entreprise"
+            },
+            "examples" : {
+              "application/json" : "{\n  \"id\": \"0e8cedd0-ad98-11e6-bf2e-47644ada7c0f\",\n  \"name\": \"George Street Brewery\",\n  \"address\":{\n    \"street\": \"2 place de la Defense\",\n    \"zipcode\": \"92053\",\n    \"city\": \"Paris\"\n  },\n  \"tags\":[\n    \"Brasserie\",\n    \"Bière\",\n    \"Bière anglaise\"\n  ]\n}"
+            }
+          }
+        },
+        "security" : [ {
+          "HTTP_BASIC" : [ ]
+        } ]
+      }
+    },
+    "/companies/{companyid}" : {
+      "get" : {
+        "tags" : [ "Entreprises" ],
+        "summary" : "Charger une entreprise",
+        "description" : "Charge une entreprise",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200",
+            "schema" : {
+              "$ref" : "#/definitions/Entreprise"
+            },
+            "examples" : {
+              "application/json" : "{\n  \"id\": \"0e8cedd0-ad98-11e6-bf2e-47644ada7c0f\",\n  \"name\": \"George Street Brewery\",\n  \"address\":{\n    \"street\": \"2 place de la Defense\",\n    \"zipcode\": \"92053\",\n    \"city\": \"Paris\"\n  },\n  \"tags\":[\n    \"Brasserie\",\n    \"Bière\",\n    \"Bière anglaise\"\n  ]\n}"
+            }
+          },
+          "400" : {
+            "description" : "Status 400",
+            "schema" : {
+              "$ref" : "#/definitions/Erreur"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Entreprises" ],
+        "summary" : "Mettre à jour une entreprise",
+        "description" : "Met à jour une entreprise",
+        "consumes" : [ ],
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/Entreprise"
+          },
+          "x-examples" : {
+            "application/json" : "{\n  \"name\": \"George Street Brewery\",\n  \"address\":{\n    \"street\": \"2 place de la Defense\",\n    \"zipcode\": \"92053\",\n    \"city\": \"Paris\"\n  },\n  \"tags\":[\n    \"Brasserie\",\n    \"Bière\",\n    \"Bière anglaise\"\n  ]\n}"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200",
+            "schema" : {
+              "$ref" : "#/definitions/Entreprise"
+            },
+            "examples" : {
+              "application/json" : "{\n  \"id\": \"0e8cedd0-ad98-11e6-bf2e-47644ada7c0f\",\n  \"name\": \"George Street Brewery\",\n  \"address\":{\n    \"street\": \"2 place de la Defense\",\n    \"zipcode\": \"92053\",\n    \"city\": \"Paris\"\n  },\n  \"tags\":[\n    \"Brasserie\",\n    \"Bière\",\n    \"Bière anglaise\"\n  ]\n}"
+            }
+          }
+        },
+        "security" : [ {
+          "HTTP_BASIC" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "Entreprises" ],
+        "summary" : "Supprimer une entreprise",
+        "description" : "Supprime une entreprise",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Statut 200"
+          }
+        },
+        "security" : [ {
+          "HTTP_BASIC" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "companyid",
+        "in" : "path",
+        "required" : true,
+        "type" : "string",
+        "description" : "Identifiant de l'entreprise",
+        "x-example" : "0e8c9fb0-ad98-11e6-bf2e-47644ada7c0f"
+      } ]
+    }
+  },
+  "securityDefinitions" : {
+    "HTTP_BASIC" : {
+      "description" : "Toutes les méthodes GET sont publiques, ce qui signifie que *vous pouvez lire toutes les données*. Les opérations d'écriture nécessitent une authentification et sont donc interdites d'accès au public.",
+      "type" : "basic"
+    }
+  },
+  "definitions" : {
+    "Erreur" : {
+      "type" : "object",
+      "required" : [ "code" ],
+      "properties" : {
+        "code" : {
+          "type" : "integer",
+          "minimum" : 400,
+          "maximum" : 599
+        },
+        "description" : {
+          "type" : "string",
+          "example" : "Paramètre de requête invalide [$size] : valeur entière invalide [abc]"
+        },
+        "reasonPhrase" : {
+          "type" : "string",
+          "example" : "Bad Request"
+        }
+      },
+      "description" : "Cette structure générale d'erreur est utilisée à travers toute l'API.",
+      "example" : "{\n  \"code\": 400,\n  \"description\": \"Paramètre de requête invalide [$size] : valeur entière invalide [abc]\",\n  \"reasonPhrase\": \"Bad Request\"\n}"
+    },
+    "Contact" : {
+      "type" : "object",
+      "required" : [ "firstName", "id", "lastName" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Champ de clé primaire auto-généré",
+          "example" : "0e8ffb10-ad98-11e6-bf2e-47644ada7c0f"
+        },
+        "firstName" : {
+          "type" : "string",
+          "example" : "Kurt"
+        },
+        "lastName" : {
+          "type" : "string",
+          "example" : "Williams"
+        },
+        "birthday" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Date de naissance en horodatage Unix (en ms)",
+          "example" : 173664000000
+        },
+        "active" : {
+          "type" : "boolean",
+          "default" : true
+        },
+        "rank" : {
+          "type" : "integer",
+          "format" : "int32",
+          "minimum" : 1,
+          "example" : 1
+        },
+        "company" : {
+          "type" : "string",
+          "description" : "Cette propriété fait référence à Company.",
+          "example" : "0e8c9fb0-ad98-11e6-bf2e-47644ada7c0f"
+        }
+      },
+      "description" : "Type de données d'un contact",
+      "example" : "{\n  \"id\": \"0e8dd830-ad98-11e6-bf2e-47644ada7c0f\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Smith\",\n  \"birthday\": 152755200000,\n  \"active\": true,\n  \"rank\": 1,\n  \"company\": \"0e8cedd0-ad98-11e6-bf2e-47644ada7c0f\"\n}"
+    },
+    "Entreprise" : {
+      "type" : "object",
+      "required" : [ "address", "id", "name" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "description" : "Champ de clé primaire auto-généré"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "tags" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "pattern" : "[a-zA-Z]+"
+          },
+          "example" : "[\"Brasserie\", \"Bière\", \"Bière anglaise\"]"
+        },
+        "address" : {
+          "required" : [ "city", "street", "zipcode" ],
+          "type" : "object",
+          "properties" : {
+            "street" : {
+              "type" : "string"
+            },
+            "city" : {
+              "type" : "string"
+            },
+            "zipcode" : {
+              "type" : "string",
+              "pattern" : "[0-9]*"
+            }
+          }
+        }
+      },
+      "description" : "Type de données d'une entreprise",
+      "example" : "{\n  \"id\": \"0e8cedd0-ad98-11e6-bf2e-47644ada7c0f\",\n  \"name\": \"George Street Brewery\",\n  \"address\":{\n    \"street\": \"2 place de la Defense\",\n    \"zipcode\": \"92053\",\n    \"city\": \"Paris\"\n  },\n  \"tags\":[\n    \"Brasserie\",\n    \"Bière\",\n    \"Bière anglaise\"\n  ]\n}"
+    }
+  }
+}
